@@ -3,43 +3,32 @@
 
 // CLASS Vec3f
 // Constructors
-Vec3f::Vec3f()
-: val(new double[3]()) 
-, x(val[0]), y(val[1]), z(val[2]) {}
-
-Vec3f::Vec3f(double x, double y, double z)
-: val(new double[3]{x, y, z}) 
-, x(val[0]), y(val[1]), z(val[2]) {}
-
-
-// Destructors
-Vec3f::~Vec3f() {
-    delete[] val;
-}
+Vec3f::Vec3f(): x(0), y(0), z(0) {}
+Vec3f::Vec3f(double x, double y, double z): x(x), y(y), z(z) {}
 
 
 // Operators
 Vec3f& Vec3f::operator=(const Vec3f& vec) {
     if (this != &vec) {
-        val[0] = vec.val[0];
-        val[1] = vec.val[1];
-        val[2] = vec.val[2];
+        x = vec.x;
+        y = vec.y;
+        z = vec.z;
         return *this;
     }
 }
 
 Vec3f Vec3f::operator+(const Vec3f& vec) const {
-    double x = val[0] + vec.val[0];
-    double y = val[0] + vec.val[0];
-    double z = val[0] + vec.val[0];
-    return Vec3f(x, y, z);
+    double new_x = x + vec.x;
+    double new_y = y + vec.y;
+    double new_z = z + vec.z;
+    return Vec3f(new_x, new_y, new_z);
 }
 
 Vec3f Vec3f::operator-() const {
-    double x = -val[0];
-    double y = -val[1];
-    double z = -val[2];
-    return Vec3f(x, y ,z);
+    double new_x = -x;
+    double new_y = -y;
+    double new_z = -z;
+    return Vec3f(new_x, new_y, new_z);
 }
 
 Vec3f Vec3f::operator-(const Vec3f& vec) const {
@@ -48,41 +37,42 @@ Vec3f Vec3f::operator-(const Vec3f& vec) const {
 
 Vec3f Vec3f::operator*(const Vec3f& vec) const {
     // Element-wise multiplication
-    double x = val[0] * vec.val[0];
-    double y = val[0] * vec.val[0];
-    double z = val[0] * vec.val[0];
-    return Vec3f(x, y, z);
+    double new_x = x * vec.x;
+    double new_y = y * vec.y;
+    double new_z = z * vec.z;
+    return Vec3f(new_x, new_y, new_z);
 }
 
 Vec3f Vec3f::operator*(const double& scalar) const {
     // Scalar multiplication
-    double x = val[0] * scalar;
-    double y = val[0] * scalar;
-    double z = val[0] * scalar;
-    return Vec3f(x, y, z);
+    double new_x = x * scalar;
+    double new_y = y * scalar;
+    double new_z = z * scalar;
+    return Vec3f(new_x, new_y, new_z);
 }
 
 Vec3f Vec3f::operator/(const Vec3f& vec) const {
     // Element-wise division
-    double x = val[0] / vec.val[0];
-    double y = val[0] / vec.val[0];
-    double z = val[0] / vec.val[0];
-    return Vec3f(x, y, z);
+    double new_x = x / vec.x;
+    double new_y = y / vec.y;
+    double new_z = z / vec.z;
+    return Vec3f(new_x, new_y, new_z);
 }
 
 Vec3f Vec3f::operator/(const double& scalar) const {
     // Scalar division
-    double x = val[0] / scalar;
-    double y = val[0] / scalar;
-    double z = val[0] / scalar;
-    return Vec3f(x, y, z);
+    double new_x = x / scalar;
+    double new_y = y / scalar;
+    double new_z = z / scalar;
+    return Vec3f(new_x, new_y, new_z);
 }
 
+
 // Member Functions
-double Vec3f::magnitude() {
+double Vec3f::magnitude() const {
     return sqrt(x*x + y*y + z*z);
 }
 
-Vec3f Vec3f::direction() {
+Vec3f Vec3f::direction() const {
     return *this / magnitude();
 }
