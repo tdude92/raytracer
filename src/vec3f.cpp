@@ -3,8 +3,14 @@
 
 // CLASS Vec3f
 // Constructors
-Vec3f::Vec3f(): x(0), y(0), z(0) {}
-Vec3f::Vec3f(double x, double y, double z): x(x), y(y), z(z) {}
+Vec3f::Vec3f()
+            : x(0), y(0), z(0) {}
+
+Vec3f::Vec3f(const Vec3f& vec)
+            : x(vec.x), y(vec.y), z(vec.z) {}
+
+Vec3f::Vec3f(double x, double y, double z)
+            : x(x), y(y), z(z) {}
 
 
 // Operators
@@ -74,5 +80,19 @@ double Vec3f::magnitude() const {
 }
 
 Vec3f Vec3f::direction() const {
+    // Returns a unit vector in the direction of this.
     return *this / magnitude();
+}
+
+
+// OTHER VECTOR OPERATIONS
+
+double dot(const Vec3f& v1, const Vec3f& v2) {
+    // Dot product of two 3D vectors.
+    return v1.x*v2.x + v1.y*v2.y + v1.z*v2.z;
+}
+
+double distance(const Vec3f& v1, const Vec3f& v2) {
+    // Euclidean distance between two points (represented by vectors.)
+    return (v1 - v2).magnitude();
 }

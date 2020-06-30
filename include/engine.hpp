@@ -1,6 +1,7 @@
 #ifndef ENGINE_HPP
 #define ENGINE_HPP
 
+#include <cstdint>
 #include "vec3f.hpp"
 
 class FrameBuffer {
@@ -14,13 +15,13 @@ class FrameBuffer {
         FrameBuffer(int w, int h,
                     double fov = 90,
                     double aspectRatio = 0.75,
-                    Vec3f pos = Vec3f(0, 0, 0),
-                    Vec3f dir = Vec3f(0, 0, -1)); // Use right hand rule to get direction of positive axes.
+                    const Vec3f& pos = Vec3f(0, 0, 0),
+                    const Vec3f& dir = Vec3f(0, 0, -1)); // Use right hand rule to get direction of positive axes.
         
         // Destructors
         ~FrameBuffer();
     private:
-        u_int8_t* frameBuffer;       // Stores pixel information.
+        uint8_t* frameBuffer;       // Stores pixel information.
 };
 
 #endif

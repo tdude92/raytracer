@@ -7,6 +7,7 @@ class Vec3f {
 
         // Constructors
         Vec3f();
+        Vec3f(const Vec3f& vec);
         Vec3f(double x, double y, double z);
 
         // Operators
@@ -24,5 +25,9 @@ class Vec3f {
         double magnitude() const;
         Vec3f  direction() const;
 };
+
+// Other vector operations.
+double dot(const Vec3f& v1, const Vec3f& v2);
+double distance(const Vec3f& v1, const Vec3f& v2);
 
 #endif

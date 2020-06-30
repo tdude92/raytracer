@@ -1,5 +1,6 @@
 #include <iostream>
 #include "vec3f.hpp"
+#include "geometry.hpp"
 #include "stb/stb_image_write.h"
 
 void printv(const Vec3f& v) {
@@ -7,17 +8,11 @@ void printv(const Vec3f& v) {
 }
 
 int main() {
-    Vec3f x(1, 2, 3123), y(1, 0.0003, 2);
-    Vec3f a = x + y;
-    printv(a);
-    printv(x - y);
-    printv(-x);
-    printv(x * 2);
-    printv(x * y);
-    printv(x / 3);
-    printv(x / y);
-    std::cout << x.magnitude() << std::endl;
-    printv(x.direction());
+    Ray ray(Vec3f(0, 0, 0), Vec3f(0, 0, 1).direction());
+    Sphere sphere(Vec3f(255, 255, 255), Vec3f(0, 12, 3), 12);
+    Vec3f* intersection = sphere.getRayIntersection(ray);
+
+    printv(*intersection);
 
     return 0;
 }
