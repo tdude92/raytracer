@@ -9,8 +9,9 @@ void printv(const Vec3f& v) {
 
 int main() {
     Ray ray(Vec3f(0, 0, 0), Vec3f(0, 0, 1).direction());
-    Sphere sphere(Vec3f(255, 255, 255), Vec3f(0, 12, 3), 12);
-    Vec3f* intersection = sphere.getRayIntersection(ray);
+    Sphere x(Vec3f(0, 12, 3), 12, Vec3f(255, 255, 255));
+    Shape* sphere = &x;
+    Vec3f* intersection = sphere->getRayIntersection(ray);
 
     printv(*intersection);
 

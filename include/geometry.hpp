@@ -20,14 +20,16 @@ class Shape {
         const Vec3f colour;
         const bool diffuse, opaque;
         const double refractiveIndex;
+
+        virtual Vec3f* getRayIntersection(Ray ray) const = 0;
 };
 
 
 class Sphere : public Shape {
     public:
-        Sphere(const Vec3f& colour,
-               const Vec3f& center,
+        Sphere(const Vec3f& center,
                double radius,
+               const Vec3f& colour,
                bool diffuse = true,
                bool opaque = true,
                double refractiveIndex = 1.5);
@@ -45,7 +47,17 @@ class Sphere : public Shape {
 class Triangle : public Shape {
     // For triangle meshes
     public:
-        Vec3f getRayIntersection(Ray ray);
+        Triangle(Vec3f* vertices, // Array of vertices.
+                 const Vec3f& colour,
+                 bool diffuse = true,
+                 bool opaque = true,
+                 double refractiveIndex = 1.5);
+        
+        Vec3f* getRayIntersection(Ray ray);
+    private:
+        Vec3f* v; // Array of vertices
+        Vec3f normal;
+
 };
 
 #endif

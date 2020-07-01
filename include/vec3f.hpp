@@ -27,6 +27,7 @@ class Vec3f {
 };
 
 // Other vector operations.
+Vec3f  cross(const Vec3f& v1, const Vec3f& v2);
 double dot(const Vec3f& v1, const Vec3f& v2);
 double distance(const Vec3f& v1, const Vec3f& v2);
 

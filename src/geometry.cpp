@@ -17,8 +17,8 @@ Shape::Shape(const Vec3f& colour, bool diffuse, bool opaque, double refractiveIn
 
 // CLASS SPHERE
 // Constructors
-Sphere::Sphere(const Vec3f& colour, const Vec3f& center,
-               double radius, bool diffuse, bool opaque, double refractiveIndex)
+Sphere::Sphere(const Vec3f& center, double radius, const Vec3f& colour
+              , bool diffuse, bool opaque, double refractiveIndex)
               : center(center), radius(radius)
               , Shape(colour, diffuse, opaque, refractiveIndex) {}
 
@@ -51,4 +51,17 @@ Vec3f* Sphere::getRayIntersection(Ray ray) const {
         *intersection = ray.origin + ray.dir*d;
         return intersection;
     }
+}
+
+
+// CLASS TRIANGLE
+// Constructors
+Triangle::Triangle(Vec3f* vertices, const Vec3f& colour,
+                   bool diffuse, bool opaque, double refractiveIndex)
+                  : v(vertices), Shape(colour, diffuse, opaque, refractiveIndex)
+                  , normal(cross((v[1] - v[0]), (v[2] - v[0]))) {}
+
+// Member functions
+Vec3f* Triangle::getRayIntersection(Ray ray) {
+    
 }
