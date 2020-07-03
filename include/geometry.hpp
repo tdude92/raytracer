@@ -21,7 +21,8 @@ class Shape {
         const bool diffuse, opaque;
         const double refractiveIndex;
 
-        virtual Vec3f* getRayIntersection(Ray ray) const = 0;
+        virtual Vec3f* getRayIntersection(const Ray& ray) const = 0;
+        virtual Vec3f  getNormal(const Ray& ray, const Vec3f& p) const = 0; // Ray origin point used to calculate direction of normal.
 };
 
 
@@ -34,7 +35,8 @@ class Sphere : public Shape {
                bool opaque = true,
                double refractiveIndex = 1.5);
         
-        Vec3f* getRayIntersection(Ray ray) const;
+        Vec3f* getRayIntersection(const Ray& ray) const;
+        Vec3f  getNormal(const Ray& ray, const Vec3f& p) const; // Get the normal vector of a point on the surface of a sphere.
     private:
         Vec3f center;
         double radius;
@@ -53,11 +55,12 @@ class Triangle : public Shape {
                  bool opaque = true,
                  double refractiveIndex = 1.5);
         
-        Vec3f* getRayIntersection(Ray ray);
+        ~Triangle();
+        
+        Vec3f* getRayIntersection(const Ray& ray) const;
+        Vec3f  getNormal(const Ray& ray, const Vec3f& p) const;
     private:
         Vec3f* v; // Array of vertices
-        Vec3f normal;
-
 };
 
 #endif

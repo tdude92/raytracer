@@ -75,6 +75,10 @@ Vec3f Vec3f::operator/(const double& scalar) const {
 
 
 // Member Functions
+double Vec3f::max() const {
+    return fmax(fmax(x, y), z);
+}
+
 double Vec3f::magnitude() const {
     return sqrt(x*x + y*y + z*z);
 }

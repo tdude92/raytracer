@@ -22,6 +22,7 @@ class Vec3f {
 
 
         // Public Member Functions
+        double max() const;
         double magnitude() const;
         Vec3f  direction() const;
 };
