@@ -1,11 +1,18 @@
+#define _USE_MATH_DEFINES
+
 #include <cstdint>
 #include <cmath>
 #include <limits>
 #include <algorithm>
-#include "stb_image_write.h"
+#include <cstdint>
+#include <vector>
+#include "stb/stb_image_write.h"
 #include "vec3f.hpp"
 #include "geometry.hpp"
 #include "engine.hpp"
+
+// FOR DEBUGGING
+#include <iostream>
 
 #define OBJECT_COLOUR_BLEND_FACTOR 0.75
 #define RECURSION_LIMIT 4
@@ -14,12 +21,12 @@
 // Constructors
 FrameBuffer::FrameBuffer(int w, int h,
                          double fov,
-                         double aspectRatio,
-                         const Vec3f& pos,
-                         const Vec3f& dir)
+                         double aspectRatio)
                         : width(w), height(h)
-                        , horFOV(fov), vertFOV(fov * aspectRatio)
-                        , pos(pos), dir(dir), frameBuffer(new uint8_t[w * h * 3]) {}
+                        , horFOV(fov * M_PI/180), vertFOV(horFOV * aspectRatio)
+                        , frameBuffer(new uint8_t[w * h * 3])
+                        , depth(w/(2*tan(horFOV/2)))
+                        , p0(Vec3f(-w/2 + 0.5, -h/2 + 0.5, depth)) {}
 
 // Destructors
 FrameBuffer::~FrameBuffer() {
@@ -37,8 +44,8 @@ FrameBuffer& FrameBuffer::operator=(const FrameBuffer& fb) {
         height = fb.height;
         horFOV = fb.horFOV;
         vertFOV = fb.vertFOV;
-        pos = fb.pos;
-        dir = fb.dir;
+        depth = fb.depth;
+        p0 = fb.p0;
     }
 }
 
@@ -67,18 +74,13 @@ double FrameBuffer::getVertFOV() const {
     return vertFOV;
 }
 
-Vec3f FrameBuffer::getPos() const {
-    return pos;
+double FrameBuffer::getDepth() const {
+    return depth;
 }
 
-Vec3f FrameBuffer::getDir() const {
-    return dir;
+Vec3f FrameBuffer::getP0() const {
+    return p0;
 }
-
-
-// STRUCT LIGHTSOURCE
-LightSource::LightSource(const Vec3f& pos, const Vec3f& colour, double brightness)
-                        : pos(pos), colour(colour), brightness(brightness) {}
 
 
 // Functions
@@ -141,7 +143,21 @@ Vec3f rayTrace(const Ray& ray, const LightSource* target, const std::vector<Ligh
 }
 
 void computeFrameBuffer(FrameBuffer* frameBuffer, const std::vector<LightSource>& lightSources, const std::vector<Shape*>& shapes) {
+    Vec3f p0 = frameBuffer->getP0();
+    for (int i = 0; i < frameBuffer->getWidth()*frameBuffer->getHeight(); ++i) {
+        int y = i / frameBuffer->getWidth();
+        int x = i % frameBuffer->getWidth();
+        
+        uint8_t* pixel = (*frameBuffer)[i];
+        Vec3f colour = rayTrace(Ray(Vec3f(0, 0, 0), (p0 + Vec3f(x, y, 0)).direction()), nullptr, lightSources, shapes);
 
+        pixel[0] = colour.x;
+        pixel[1] = colour.y;
+        pixel[2] = colour.z;
+
+        // FOR DEBUG
+        std::cout << "(" << x << ", " << y << ")" << std::endl;
+    }
 }
 
 void writeFrameBuffer(const FrameBuffer& frameBuffer) {

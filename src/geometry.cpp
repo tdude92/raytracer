@@ -1,4 +1,3 @@
-#include <iostream>
 #include <cmath>
 #include "geometry.hpp"
 
@@ -13,19 +12,22 @@ Ray::Ray(const Vec3f& origin, const Vec3f& dir)
           : origin(origin), dir(dir) {}
 
 
+// STRUCT LIGHTSOURCE
+LightSource::LightSource(const Vec3f& pos, const Vec3f& colour, double brightness)
+                        : pos(pos), colour(colour), brightness(brightness) {}
+
+
 // CLASS SHAPE
 // Constructors
-Shape::Shape(const Vec3f& colour, bool diffuse, bool opaque, double refractiveIndex)
-            : colour(colour), diffuse(diffuse)
-            , opaque(opaque), refractiveIndex(refractiveIndex) {}
+Shape::Shape(const Vec3f& colour, bool diffuse)
+            : colour(colour), diffuse(diffuse) {}
 
 
 // CLASS SPHERE
 // Constructors
-Sphere::Sphere(const Vec3f& center, double radius, const Vec3f& colour
-              , bool diffuse, bool opaque, double refractiveIndex)
+Sphere::Sphere(const Vec3f& center, double radius, const Vec3f& colour, bool diffuse)
               : center(center), radius(radius)
-              , Shape(colour, diffuse, opaque, refractiveIndex) {}
+              , Shape(colour, diffuse) {}
 
 // Member functions
 Vec3f* Sphere::getRayIntersection(const Ray& ray) const {
@@ -70,9 +72,8 @@ Vec3f Sphere::getNormal(const Ray& ray, const Vec3f& p) const {
 
 // CLASS TRIANGLE
 // Constructors
-Triangle::Triangle(Vec3f* vertices, const Vec3f& colour,
-                   bool diffuse, bool opaque, double refractiveIndex)
-                  : v(vertices), Shape(colour, diffuse, opaque, refractiveIndex) {}
+Triangle::Triangle(Vec3f* vertices, const Vec3f& colour, bool diffuse)
+                  : v(vertices), Shape(colour, diffuse) {}
 
 // Destructors
 Triangle::~Triangle() {}
