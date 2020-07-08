@@ -11,7 +11,8 @@ enum OBJ {
     FRAMEBUFFER,
     SPHERE,
     TRIANGLE,
-    LIGHTSOURCE
+    POINTLIGHTSOURCE,
+    DIRECTIONALLIGHTSOURCE
 };
 
 
@@ -19,15 +20,14 @@ struct Config {
     int width, height;
     double fov, aspectRatio;
     std::vector<Shape*> shapes;
-    std::vector<LightSource> lightSources;
+    std::vector<LightSource*> lightSources;
 };
 
 
 struct ObjData {
     rt_object type = OBJ::FRAMEBUFFER;
-    Vec3f pos, colour;
-    double radius, brightness;
-    bool diffuse;
+    Vec3f pos, colour, dir;
+    double radius, intensity;
 };
 
 

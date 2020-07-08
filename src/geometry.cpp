@@ -1,5 +1,6 @@
 #include <cmath>
 #include "geometry.hpp"
+#include "engine.hpp"
 
 // TODO: Complete Triangle::getRayIntersection() and Triangle::getNormal() and Triangle::~Triangle().
 // TODO: Return >1 intersections if possible. (Might not be necessary)
@@ -8,26 +9,70 @@
 
 // STRUCT RAY
 // Constructors
+Ray::Ray()
+        : origin(Vec3f()), dir(Vec3f()) {}
+
 Ray::Ray(const Vec3f& origin, const Vec3f& dir)
           : origin(origin), dir(dir) {}
 
 
-// STRUCT LIGHTSOURCE
-LightSource::LightSource(const Vec3f& pos, const Vec3f& colour, double brightness)
-                        : pos(pos), colour(colour), brightness(brightness) {}
+// CLASS LIGHTSOURCE
+LightSource::LightSource(const Vec3f& pos, const Vec3f& colour, double intensity)
+                        : pos(pos), colour(colour), intensity(intensity) {}
+
+
+// CLASS POINTLIGHTSOURCE
+// Constructors
+PointLightSource::PointLightSource(const Vec3f& pos, const Vec3f& colour, double intensity)
+                                  : LightSource(pos, colour, intensity) {}
+
+// Member Functions
+Vec3f PointLightSource::getColour(const Vec3f& origin, const std::vector<LightSource*>& lightSources, const std::vector<Shape*>& shapes, int samples) const {
+    return colour;
+}
+
+
+// CLASS DIRECTIONALLIGHTSOURCE
+// Constructors
+DirectionalLightSource::DirectionalLightSource(const Vec3f& pos, const Vec3f& colour, const Vec3f& dir,  double radius, double intensity)
+                                              : dir(dir.direction()), radius(radius), LightSource(pos, colour, intensity) {}
+
+// Member Functions
+Vec3f DirectionalLightSource::getColour(const Vec3f& origin, const std::vector<LightSource*>& lightSources, const std::vector<Shape*>& shapes, int samples) const {
+    // TODO: MAKE IT ACTUALLY DIRECTIONAL. DOT PRODUCT STUFF WITH RAY DIR AND NORMAL.
+    Vec3f sum = Vec3f();
+
+    Vec3f basisX = Vec3f(dir.z, 0, -dir.x).direction();
+    Vec3f basisY = cross(dir, basisX);
+
+    Ray ray;
+    Vec3f sampledPoint;
+    double rR, rTheta; // Random numbers.
+    for (int i = 0; i < samples; ++i) {
+        rR = ((double)rand()/RAND_MAX);
+        rTheta = ((double)rand()/RAND_MAX);
+        sampledPoint = pos + (basisX*cos(rTheta) + basisY*sin(rTheta)) * radius * rR;
+
+        ray.origin = origin;
+        ray.dir = (sampledPoint - origin).direction();
+
+        sum = sum + rayTrace(ray, this, lightSources, shapes, true);
+    }
+    return sum / samples;
+}
 
 
 // CLASS SHAPE
 // Constructors
-Shape::Shape(const Vec3f& colour, bool diffuse)
-            : colour(colour), diffuse(diffuse) {}
+Shape::Shape(const Vec3f& colour)
+            : colour(colour) {}
 
 
 // CLASS SPHERE
 // Constructors
-Sphere::Sphere(const Vec3f& center, double radius, const Vec3f& colour, bool diffuse)
+Sphere::Sphere(const Vec3f& center, double radius, const Vec3f& colour)
               : center(center), radius(radius)
-              , Shape(colour, diffuse) {}
+              , Shape(colour) {}
 
 // Member functions
 Vec3f* Sphere::getRayIntersection(const Ray& ray) const {
@@ -76,8 +121,8 @@ Vec3f Sphere::getPos() const {
 
 // CLASS TRIANGLE
 // Constructors
-Triangle::Triangle(Vec3f* vertices, const Vec3f& colour, bool diffuse)
-                  : v(vertices), Shape(colour, diffuse) {}
+Triangle::Triangle(Vec3f* vertices, const Vec3f& colour)
+                  : v(vertices), Shape(colour) {}
 
 // Destructors
 Triangle::~Triangle() {}

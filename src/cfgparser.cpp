@@ -18,15 +18,23 @@ inline void writeObj(Config* cfg, const ObjData& data) {
             cfg->shapes.push_back(new Sphere(
                 data.pos,
                 data.radius,
-                data.colour,
-                data.diffuse
+                data.colour
             ));
 
-        } else if (data.type == OBJ::LIGHTSOURCE) {
-            cfg->lightSources.push_back(LightSource(
+        } else if (data.type == OBJ::POINTLIGHTSOURCE) {
+            cfg->lightSources.push_back(new PointLightSource(
                 data.pos,
                 data.colour,
-                data.brightness
+                data.intensity
+            ));
+
+        } else if (data.type == OBJ::DIRECTIONALLIGHTSOURCE) {
+            cfg->lightSources.push_back(new DirectionalLightSource(
+                data.pos,
+                data.colour,
+                data.dir,
+                data.radius,
+                data.intensity
             ));
 
         }
@@ -79,13 +87,20 @@ void loadConfiguration(const std::string& fileName, Config* cfg) {
 
             currObj->type = OBJ::SPHERE;
 
-        } else if (is_substr(line, "#LightSource")) {
+        } else if (is_substr(line, "#PointLightSource")) {
             writeObj(cfg, *currObj);
             delete currObj;
             currObj = new ObjData;
 
-            currObj->type = OBJ::LIGHTSOURCE;
+            currObj->type = OBJ::POINTLIGHTSOURCE;
 
+        } else if (is_substr(line, "#DirectionalLightSource")) {
+            writeObj(cfg, *currObj);
+            delete currObj;
+            currObj = new ObjData;
+
+            currObj->type = OBJ::DIRECTIONALLIGHTSOURCE;
+            
         } else if (currObj->type == OBJ::SPHERE) {
             if (is_substr(line, "center"))
                 currObj->pos = parseVec3f_cfg(line.substr(line.find_first_of("=") + 1));
@@ -93,16 +108,26 @@ void loadConfiguration(const std::string& fileName, Config* cfg) {
                 currObj->radius = std::stod(line.substr(line.find_first_of("=") + 1));
             else if (is_substr(line, "colour"))
                 currObj->colour = parseVec3f_cfg(line.substr(line.find_first_of("=") + 1));
-            else if (is_substr(line, "diffuse"))
-                currObj->diffuse = parseBool_cfg(line.substr(line.find_first_of("=") + 1));
 
-        } else if (currObj->type == OBJ::LIGHTSOURCE) {
+        } else if (currObj->type == OBJ::POINTLIGHTSOURCE) {
             if (is_substr(line, "colour"))
                 currObj->colour = parseVec3f_cfg(line.substr(line.find_first_of("=") + 1));
             else if (is_substr(line, "pos"))
                 currObj->pos = parseVec3f_cfg(line.substr(line.find_first_of("=") + 1));
-            else if (is_substr(line, "brightness"))
-                currObj->brightness = std::stod(line.substr(line.find_first_of("=") + 1));
+            else if (is_substr(line, "intensity"))
+                currObj->intensity = std::stod(line.substr(line.find_first_of("=") + 1));
+
+        } else if (currObj->type == OBJ::DIRECTIONALLIGHTSOURCE) {
+            if (is_substr(line, "colour"))
+                currObj->colour = parseVec3f_cfg(line.substr(line.find_first_of("=") + 1));
+            else if (is_substr(line, "pos"))
+                currObj->pos = parseVec3f_cfg(line.substr(line.find_first_of("=") + 1));
+            else if (is_substr(line, "intensity"))
+                currObj->intensity = std::stod(line.substr(line.find_first_of("=") + 1));
+            else if (is_substr(line, "dir"))
+                currObj->dir = parseVec3f_cfg(line.substr(line.find_first_of("=") + 1));
+            else if (is_substr(line, "radius"))
+                currObj->radius = std::stod(line.substr(line.find_first_of("=") + 1));
 
         } else if (currObj->type == OBJ::FRAMEBUFFER) {
             if (is_substr(line, "width"))
