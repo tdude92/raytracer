@@ -29,6 +29,7 @@ class Shape {
 
         virtual Vec3f* getRayIntersection(const Ray& ray) const = 0;
         virtual Vec3f  getNormal(const Ray& ray, const Vec3f& p) const = 0; // Ray origin point used to calculate direction of normal.
+        virtual Vec3f  getPos() const = 0;
 };
 
 
@@ -41,6 +42,7 @@ class Sphere : public Shape {
         
         Vec3f* getRayIntersection(const Ray& ray) const;
         Vec3f  getNormal(const Ray& ray, const Vec3f& p) const; // Get the normal vector of a point on the surface of a sphere.
+        Vec3f  getPos() const;
     private:
         Vec3f center;
         double radius;
@@ -61,6 +63,7 @@ class Triangle : public Shape {
         
         Vec3f* getRayIntersection(const Ray& ray) const;
         Vec3f  getNormal(const Ray& ray, const Vec3f& p) const;
+        Vec3f  getPos() const;
     private:
         Vec3f* v; // Array of vertices
 };

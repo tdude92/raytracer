@@ -37,9 +37,9 @@ inline void writeObj(Config* cfg, const ObjData& data) {
 
 
 inline bool parseBool_cfg(const std::string& b) {
-    if (b == "true")
+    if (std::stoi(b) == 1)
         return true;
-    else if (b == "false")
+    else if (std::stoi(b) == 0)
         return false;
 }
 

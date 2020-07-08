@@ -1,6 +1,7 @@
 #ifndef ENGINE_HPP
 #define ENGINE_HPP
 
+#include <iostream>
 #include <cstdint>
 #include <vector>
 #include "vec3f.hpp"
@@ -28,6 +29,13 @@ class FrameBuffer {
         double getVertFOV() const;
         double getDepth() const;
         Vec3f getP0() const;
+
+        void debug() const {
+            for (int i = 0; i < width*height; ++i) {
+                int y = i / width, x = i % width;
+                DEBUG(x << "," << y << ":" << (unsigned int)frameBuffer[i] << "," << (unsigned int)frameBuffer[i+1] << "," << (unsigned int)frameBuffer[i+2]);
+            }
+        }
 
     private:
         int width, height;          // In pixels.

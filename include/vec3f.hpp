@@ -1,6 +1,9 @@
 #ifndef VEC3F_HPP
 #define VEC3F_HPP
 
+#define DEBUG(x) std::cout << x << std::endl
+#define PRINTV(a) std::cout << "(" << a.x << ", " << a.y << ", " << a.z << ")" << std::endl
+
 class Vec3f {
     public:
         double x, y, z;

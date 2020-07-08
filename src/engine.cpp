@@ -104,10 +104,10 @@ Vec3f rayTrace(const Ray& ray, const LightSource* target, const std::vector<Ligh
 
     if (closestIntersection == nullptr) {
         // No intersections with any objects.
-        if (target)
+        if (target) {
             // If ray is pointed towards a light source.
             return target->colour * target->brightness;
-        else {
+        } else {
             // If ray is not directed towards a light source.
             return Vec3f(0, 0, 0);
         }
@@ -117,10 +117,11 @@ Vec3f rayTrace(const Ray& ray, const LightSource* target, const std::vector<Ligh
             return Vec3f(0, 0, 0);
         } else if (closestIntersectionShape->diffuse) {
             // If the object has a diffuse surface.
-            Vec3f sum;
+            Vec3f sum = Vec3f();
             for (int i = 0; i < lightSources.size(); ++i)
                 sum = sum + rayTrace(Ray(*closestIntersection, (lightSources[i].pos - *closestIntersection).direction()),
                                      &lightSources[i], lightSources, shapes, true);
+                
             sum = sum * 255/sum.max();
             return (sum*(1 - OBJECT_COLOUR_BLEND_FACTOR) + closestIntersectionShape->colour*(OBJECT_COLOUR_BLEND_FACTOR));
         } else {
@@ -151,13 +152,11 @@ void computeFrameBuffer(FrameBuffer* frameBuffer, const std::vector<LightSource>
         uint8_t* pixel = (*frameBuffer)[i];
         Vec3f colour = rayTrace(Ray(Vec3f(0, 0, 0), (p0 + Vec3f(x, y, 0)).direction()), nullptr, lightSources, shapes);
 
-        pixel[0] = colour.x;
-        pixel[1] = colour.y;
-        pixel[2] = colour.z;
-
-        // FOR DEBUG
-        std::cout << "(" << x << ", " << y << ")" << std::endl;
+        pixel[0] = (uint8_t)(unsigned int)colour.x;
+        pixel[1] = (uint8_t)(unsigned int)colour.y;
+        pixel[2] = (uint8_t)(unsigned int)colour.z;
     }
+    frameBuffer->debug();
 }
 
 void writeFrameBuffer(const FrameBuffer& frameBuffer) {

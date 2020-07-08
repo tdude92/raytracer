@@ -42,17 +42,17 @@ Vec3f* Sphere::getRayIntersection(const Ray& ray) const {
         Vec3f* intersection = new Vec3f();
         double root1 = sqrt(discriminant), root2 = -sqrt(discriminant);
 
-        if (d + root1 < -1e-5 && d + root2 < -1e-5) {
+        if (d + root1 < 0 && d + root2 < 0) {
             // if d <= 0, then the point of intersection is in the opposite direction of the ray from the origin.
             // (this is because we represent a ray in the form: x = ray.origin + ray.dir*d, where d is an element
             //  of naturals with zero)
             return nullptr;
-        } else if (d + root1 < -1e-5) {
+        } else if (d + root1 < 0) {
             d += root2;
-        } else if (d + root2 < -1e-5) {
+        } else if (d + root2 < 0) {
             d += root1;
         } else {
-            d += fmin(root1, root2);
+            d += fmin(root1, root2) - 1e-5;
         }
 
         *intersection = ray.origin + ray.dir*d;
@@ -69,6 +69,10 @@ Vec3f Sphere::getNormal(const Ray& ray, const Vec3f& p) const {
     return normal;
 }
 
+Vec3f Sphere::getPos() const {
+    return center;
+}
+
 
 // CLASS TRIANGLE
 // Constructors
@@ -81,3 +85,4 @@ Triangle::~Triangle() {}
 // Member functions
 Vec3f* Triangle::getRayIntersection(const Ray& ray) const {}
 Vec3f Triangle::getNormal(const Ray& ray, const Vec3f& p) const {}
+Vec3f Triangle::getPos() const {}
