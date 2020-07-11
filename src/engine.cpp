@@ -106,7 +106,7 @@ Vec3f rayTrace(const Ray& ray, const LightSource* target, const std::vector<Ligh
         if (sum.magnitude() > 0)
             return (sum*(1 - OBJECT_COLOUR_BLEND_FACTOR) + closestIntersectionShape->colour*(OBJECT_COLOUR_BLEND_FACTOR));
     } else if (closestIntersection != nullptr) {
-        return closestIntersectionShape->colour*0.25;
+        return closestIntersectionShape->colour*0.05;
     }
     
     // Or ray is not targetting a light source and has no intersections.
