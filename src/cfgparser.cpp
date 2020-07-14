@@ -136,8 +136,6 @@ void loadConfiguration(const std::string& fileName, Config* cfg) {
                 cfg->height = std::stoi(line.substr(line.find_first_of("=") + 1));
             else if (is_substr(line, "fov"))
                 cfg->fov = std::stod(line.substr(line.find_first_of("=") + 1));
-            else if (is_substr(line, "aspectRatio"))
-                cfg->aspectRatio = std::stod(line.substr(line.find_first_of("=") + 1));
 
         }
     }

@@ -18,7 +18,7 @@ enum OBJ {
 
 struct Config {
     int width, height;
-    double fov, aspectRatio;
+    double fov;
     std::vector<Shape*> shapes;
     std::vector<LightSource*> lightSources;
 };

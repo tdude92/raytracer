@@ -11,8 +11,7 @@ class FrameBuffer {
     public:
         // Constructors
         FrameBuffer(int w, int h,
-                    double fov = 90, // 180 < fov < 0
-                    double aspectRatio = 0.75); // (Vertical FOV) / (Horizontal FOV)
+                    double fov = 90); // 180 < fov < 0
         // Destructors
         ~FrameBuffer();
 

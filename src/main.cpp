@@ -12,7 +12,7 @@ int main(int argc, char** argv) {
     Config cfg;
     loadConfiguration(argv[1], &cfg);
 
-    FrameBuffer fb(cfg.width, cfg.height, cfg.fov, cfg.aspectRatio);
+    FrameBuffer fb(cfg.width, cfg.height, cfg.fov);
     computeFrameBuffer(&fb, cfg.lightSources, cfg.shapes);
     writeFrameBuffer(fb);
     freeShapeVector(&cfg.shapes);

@@ -17,10 +17,9 @@
 // CLASS FRAMEBUFFER
 // Constructors
 FrameBuffer::FrameBuffer(int w, int h,
-                         double fov,
-                         double aspectRatio)
+                         double fov)
                         : width(w), height(h)
-                        , horFOV(fov * M_PI/180), vertFOV(horFOV * aspectRatio)
+                        , horFOV(fov * M_PI/180), vertFOV(2*atan((h/w)*tan(horFOV/2)))
                         , frameBuffer(new uint8_t[w * h * 3])
                         , depth(w/(2*tan(horFOV/2)))
                         , p0(Vec3f(-w/2 + 0.5, -h/2 + 0.5, depth)) {
