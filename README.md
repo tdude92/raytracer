@@ -1,6 +1,6 @@
 # raytracer
 
-![3 Raytraced Spheres][https://github.com/tdude92/raytracer/blob/master/example/outputs/spheres4.jpg?raw=true]
+![3 Raytraced Spheres](https://github.com/tdude92/raytracer/blob/master/example/outputs/spheres4.jpg?raw=true)
 
 Implementation by Trevor Du
 
