@@ -59,3 +59,5 @@ Information about a raytraced scene is specified in a .cfg file. The configurati
         colour=[r,g,b]
         intensity=<POWER IN WATTS>
         ```
+
+*Note: The camera position is at world coordinates (0, 0, 0) and is facing (0, 0, 1)*
