@@ -1,8 +1,11 @@
 # raytracer
+
+![3 Raytraced Spheres][https://github.com/tdude92/raytracer/blob/master/example/outputs/spheres4.jpg]
 Implementation by Trevor Du
 
 ## Instructions
 ```
+bash get_dependencies.sh
 make dirs
 make
 cd bin/
