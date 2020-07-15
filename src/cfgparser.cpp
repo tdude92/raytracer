@@ -52,7 +52,7 @@ inline bool parseBool_cfg(const std::string& b) {
 }
 
 
-Vec3f parseVec3f_cfg(std::string vec) {
+Vec3f parseVec3f_cfg(std::string vec, bool colour = false) {
     vec = vec.substr(1, vec.length() - 2);
 
     double x = std::stod(vec.substr(0, vec.find_first_of(",")));
@@ -63,7 +63,12 @@ Vec3f parseVec3f_cfg(std::string vec) {
 
     double z = std::stod(vec);
 
-    return Vec3f(x, y, z);
+    if (!colour)
+        return Vec3f(x, -y, z);     // Coordinate system should be a left-handed coordinate system.
+                                    // But y-coords increase when going down. Making the y negative
+                                    // Fixes this.
+    else
+        return Vec3f(x, y ,z);
 }
 
 
@@ -107,11 +112,11 @@ void loadConfiguration(const std::string& fileName, Config* cfg) {
             else if (is_substr(line, "radius"))
                 currObj->radius = std::stod(line.substr(line.find_first_of("=") + 1));
             else if (is_substr(line, "colour"))
-                currObj->colour = parseVec3f_cfg(line.substr(line.find_first_of("=") + 1));
+                currObj->colour = parseVec3f_cfg(line.substr(line.find_first_of("=") + 1), true);
 
         } else if (currObj->type == OBJ::POINTLIGHTSOURCE) {
             if (is_substr(line, "colour"))
-                currObj->colour = parseVec3f_cfg(line.substr(line.find_first_of("=") + 1));
+                currObj->colour = parseVec3f_cfg(line.substr(line.find_first_of("=") + 1), true);
             else if (is_substr(line, "pos"))
                 currObj->pos = parseVec3f_cfg(line.substr(line.find_first_of("=") + 1));
             else if (is_substr(line, "intensity"))
@@ -119,7 +124,7 @@ void loadConfiguration(const std::string& fileName, Config* cfg) {
 
         } else if (currObj->type == OBJ::DIRECTIONALLIGHTSOURCE) {
             if (is_substr(line, "colour"))
-                currObj->colour = parseVec3f_cfg(line.substr(line.find_first_of("=") + 1));
+                currObj->colour = parseVec3f_cfg(line.substr(line.find_first_of("=") + 1), true);
             else if (is_substr(line, "pos"))
                 currObj->pos = parseVec3f_cfg(line.substr(line.find_first_of("=") + 1));
             else if (is_substr(line, "intensity"))
