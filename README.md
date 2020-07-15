@@ -52,7 +52,7 @@ Information about a raytraced scene is specified in a .cfg file. The configurati
     3. Directional Light Source
 
         ```
-        #PointLightSource
+        #DirectionalLightSource
         radius=<SOME NUMBER>
         pos=[x,y,z]
         dir=[i,j,k]
